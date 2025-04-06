@@ -1,0 +1,143 @@
+{
+  "groups": [
+    {
+      "name": "app",
+      "type": "com.didan.archetype.config.properties.AppConfigProperties",
+      "sourceType": "com.didan.archetype.config.properties.AppConfigProperties"
+    },
+    {
+      "name": "app.cache.memory",
+      "type": "com.didan.archetype.config.properties.LocalCacheConfigProperties",
+      "sourceType": "com.didan.archetype.config.properties.LocalCacheConfigProperties"
+    },
+    {
+      "name": "app.cache.memory.caffeine",
+      "type": "com.didan.archetype.config.properties.supobj.CaffeineCacheConfig",
+      "sourceType": "com.didan.archetype.config.properties.LocalCacheConfigProperties",
+      "sourceMethod": "getCaffeine()"
+    },
+    {
+      "name": "app.cache.redis",
+      "type": "com.didan.archetype.config.properties.RedisCacheConfigProperties",
+      "sourceType": "com.didan.archetype.config.properties.RedisCacheConfigProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "app.application-context-name",
+      "type": "java.lang.String",
+      "sourceType": "com.didan.archetype.config.properties.AppConfigProperties"
+    },
+    {
+      "name": "app.application-short-name",
+      "type": "java.lang.String",
+      "sourceType": "com.didan.archetype.config.properties.AppConfigProperties"
+    },
+    {
+      "name": "app.async-executor-core-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "com.didan.archetype.config.properties.AppConfigProperties"
+    },
+    {
+      "name": "app.async-executor-max-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "com.didan.archetype.config.properties.AppConfigProperties"
+    },
+    {
+      "name": "app.async-executor-thread-name-prefix",
+      "type": "java.lang.String",
+      "sourceType": "com.didan.archetype.config.properties.AppConfigProperties"
+    },
+    {
+      "name": "app.cache.memory.cache-names",
+      "type": "java.lang.String",
+      "sourceType": "com.didan.archetype.config.properties.LocalCacheConfigProperties"
+    },
+    {
+      "name": "app.cache.memory.caffeine.spec",
+      "type": "java.lang.String",
+      "sourceType": "com.didan.archetype.config.properties.supobj.CaffeineCacheConfig"
+    },
+    {
+      "name": "app.cache.memory.enable",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.didan.archetype.config.properties.LocalCacheConfigProperties"
+    },
+    {
+      "name": "app.cache.redis.cache-expirations",
+      "type": "java.util.Map<java.lang.String,java.lang.Long>",
+      "sourceType": "com.didan.archetype.config.properties.RedisCacheConfigProperties"
+    },
+    {
+      "name": "app.cache.redis.enable",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.didan.archetype.config.properties.RedisCacheConfigProperties"
+    },
+    {
+      "name": "app.cache.redis.host",
+      "type": "java.lang.String",
+      "sourceType": "com.didan.archetype.config.properties.RedisCacheConfigProperties"
+    },
+    {
+      "name": "app.cache.redis.nodes",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "com.didan.archetype.config.properties.RedisCacheConfigProperties"
+    },
+    {
+      "name": "app.cache.redis.password",
+      "type": "java.lang.String",
+      "sourceType": "com.didan.archetype.config.properties.RedisCacheConfigProperties"
+    },
+    {
+      "name": "app.cache.redis.port",
+      "type": "java.lang.Integer",
+      "sourceType": "com.didan.archetype.config.properties.RedisCacheConfigProperties"
+    },
+    {
+      "name": "app.cache.redis.timeout-seconds",
+      "type": "java.lang.Long",
+      "sourceType": "com.didan.archetype.config.properties.RedisCacheConfigProperties"
+    },
+    {
+      "name": "app.datasource",
+      "type": "java.util.Map<java.lang.String,com.didan.archetype.config.properties.AppConfigProperties$BaseDataSourceProperties>",
+      "sourceType": "com.didan.archetype.config.properties.AppConfigProperties"
+    },
+    {
+      "name": "app.default-language",
+      "type": "java.lang.String",
+      "sourceType": "com.didan.archetype.config.properties.AppConfigProperties"
+    },
+    {
+      "name": "app.default-service-enable-log-request",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.didan.archetype.config.properties.AppConfigProperties"
+    },
+    {
+      "name": "app.locale-resolver-languages",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "com.didan.archetype.config.properties.AppConfigProperties"
+    },
+    {
+      "name": "app.log-graphql-enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.didan.archetype.config.properties.AppConfigProperties"
+    },
+    {
+      "name": "app.log-request-http",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.didan.archetype.config.properties.AppConfigProperties"
+    },
+    {
+      "name": "app.repository-query-limit-warning-ms",
+      "type": "java.lang.Integer",
+      "sourceType": "com.didan.archetype.config.properties.AppConfigProperties"
+    },
+    {
+      "name": "app.time-trace-enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.didan.archetype.config.properties.AppConfigProperties"
+    }
+  ],
+  "hints": []
+}
