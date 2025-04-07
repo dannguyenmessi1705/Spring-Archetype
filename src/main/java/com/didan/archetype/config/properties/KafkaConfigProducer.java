@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Primary;
 )
 @Configuration // Đánh dấu lớp này là một cấu hình Spring
 @Primary // Đánh dấu lớp này là lớp chính trong Spring, sẽ được sử dụng thay cho lớp khác có cùng kiểu
-@RefreshScope // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
+ // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
 @ConditionalOnProperty(
     value = {"spring.kafka.enabled", "spring.kafka.producer.enabled"}, // Điều kiện để kích hoạt cấu hình này
     havingValue = "true" // Giá trị cần có để kích hoạt

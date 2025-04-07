@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7752645d-4642-4b19-a981-c278ad832a78" name="Changes" comment="add readme">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/didan/archetype/config/properties/AppConfigProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/didan/archetype/config/properties/AppConfigProperties.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/didan/archetype/config/resttemplate/RestTemplateTracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/didan/archetype/config/resttemplate/RestTemplateTracer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/didan/archetype/config/resttemplate/RestTemplateUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/didan/archetype/config/resttemplate/RestTemplateUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/didan/archetype/utils/UtilsCommon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/didan/archetype/utils/UtilsCommon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+    <list default="true" id="7752645d-4642-4b19-a981-c278ad832a78" name="Changes" comment="add validate">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/didan/archetype/ApplicationArchetype.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/didan/archetype/ApplicationArchetype.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,7 +125,7 @@
       <workItem from="1743943478812" duration="2237000" />
       <workItem from="1743947535817" duration="15431000" />
       <workItem from="1744017592460" duration="1047000" />
-      <workItem from="1744018685465" duration="23145000" />
+      <workItem from="1744018685465" duration="27332000" />
     </task>
     <task id="LOCAL-00001" summary="init archetype">
       <option name="closed" value="true" />
@@ -167,7 +159,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744031689193</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="add validate">
+      <option name="closed" value="true" />
+      <created>1744051218054</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1744051218054</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -189,6 +189,7 @@
     <MESSAGE value="kafka &amp; resttemplate archetype" />
     <MESSAGE value="remove" />
     <MESSAGE value="add readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="add readme" />
+    <MESSAGE value="add validate" />
+    <option name="LAST_COMMIT_MESSAGE" value="add validate" />
   </component>
 </project>

@@ -11,7 +11,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @ConfigurationProperties(
     prefix = "app.cache.redis" // Đánh dấu lớp này để ánh xạ các thuộc tính từ file cấu hình có prefix là "app.cache.redis"
 )
-@RefreshScope // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
+ // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
 @Data
 public class RedisCacheConfigProperties {
 

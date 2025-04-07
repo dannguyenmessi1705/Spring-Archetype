@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Primary;
 )
 @Configuration
 @Primary // Đánh dấu lớp này là lớp chính trong Spring, sẽ được sử dụng thay cho lớp khác có cùng kiểu
-@RefreshScope
+
 @ConditionalOnProperty(
     value = {"spring.kafka.enabled"}, // Điều kiện để kích hoạt cấu hình này
     havingValue = "true" // Giá trị cần có để kích hoạt

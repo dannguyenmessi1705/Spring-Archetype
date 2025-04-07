@@ -9,7 +9,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @ConfigurationProperties(
     prefix = "app.cache.memory" // Đánh dấu lớp này để ánh xạ các thuộc tính từ file cấu hình có prefix là "app.cache.memory"
 )
-@RefreshScope // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
+ // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
 @Data
 public class LocalCacheConfigProperties {
   private boolean enabled; // Biến này xác định xem cache có được kích hoạt hay không

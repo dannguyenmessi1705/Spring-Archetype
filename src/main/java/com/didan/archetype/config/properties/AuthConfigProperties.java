@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Primary;
 )
 @Configuration
 @Primary
-@RefreshScope // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
+ // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
 @ConditionalOnProperty(
     value = {"app.auth.enabled"}, // Điều kiện để kích hoạt cấu hình này
     havingValue = "true" // Giá trị cần có để kích hoạt
@@ -41,7 +41,7 @@ public class AuthConfigProperties {
       value = "app.auth.type",
       havingValue = "KEY" // Điều kiện để kích hoạt cấu hình này
   )
-  @RefreshScope // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
+   // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
   @Data
   public static class AuthTypePublicKey {
     @Value("${app.auth.key.public-key}")

@@ -349,10 +349,10 @@ public interface CacheTestService {
 
 ### Hot Reload config
 - Hệ thống đang có tính năng hot reload 1 số config tại thời điểm runtime
-- Để làm điều này tại class khai báo thêm annotation `@RefreshScope`
+- Để làm điều này tại class khai báo thêm annotation ``
 ```java
 @Configuration
-@RefreshScope
+
 @Slf4j
 public class TestHotReload {
     
@@ -388,7 +388,7 @@ public class Main {
 - Cách giải quyết là class impl thêm 1 interface `RefreshScheduler` để hệ thống tái kích hoạt lại Scheduled sau thời điểm reload config
 ```java
 @Configuration
-@RefreshScope
+
 @Slf4j
 public class ProcessCheckApp implements RefreshScheduler {
   @Autowired

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Primary;
 )
 @Configuration
 @Primary
-@RefreshScope
+
 @Data
 public class SwaggerConfigProperties {
   private boolean enabled = true; // Biến này xác định xem Swagger có được kích hoạt hay không

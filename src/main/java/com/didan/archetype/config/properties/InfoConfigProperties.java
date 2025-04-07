@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(
     prefix = "info.build" // Đánh dấu lớp này để ánh xạ các thuộc tính từ file cấu hình có prefix là "info.build"
 )
-@RefreshScope // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
+ // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
 @Data
 public class InfoConfigProperties {
   @Value("${info.build.artifact}")
