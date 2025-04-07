@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 
@@ -18,7 +15,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @Data
 public class RedisCacheConfigProperties {
 
-  private boolean enable; // Biến này xác định xem cache có được kích hoạt hay không
+  private boolean enabled; // Biến này xác định xem cache có được kích hoạt hay không
   private long timeoutSeconds = 60L; // Thời gian timeout mặc định cho cache
   private int port = 6379; // Cổng mặc định của Redis
   private String host = "localhost"; // Địa chỉ host mặc định của Redis

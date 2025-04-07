@@ -12,7 +12,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @RefreshScope // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
 @Data
 public class LocalCacheConfigProperties {
-  private boolean enable; // Biến này xác định xem cache có được kích hoạt hay không
+  private boolean enabled; // Biến này xác định xem cache có được kích hoạt hay không
   private String cacheNames; // Tên của cache
   @NestedConfigurationProperty // Annotation này cho phép ánh xạ các thuộc tính lồng nhau
   private CaffeineCacheConfig caffeine; // Các thuộc tính cấu hình cho cache Caffeine

@@ -20,12 +20,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration // Đánh dấu lớp này là một cấu hình Spring
 @ConfigurationProperties(prefix = "app") // Đánh dấu lớp này để ánh xạ các thuộc tính từ file cấu hình có prefix là "app"
 @RefreshScope // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
-@Getter
-@Setter
+@Data
 public class AppConfigProperties {
-  public AppConfigProperties() {}
-
-  @Value("${app.application.short-name:}") // Đọc giá trị từ file cấu hình với key là "app.application.short-name")
+  @Value("${app.application.short-name}") // Đọc giá trị từ file cấu hình với key là "app.application.short-name")
   private String applicationShortName;
 
   @Value("${app.application.context-name}")

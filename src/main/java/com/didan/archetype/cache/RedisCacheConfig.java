@@ -88,7 +88,7 @@ public class RedisCacheConfig {
   } // Tạo một RedisTemplate với kiểu dữ liệu là Byte[] cho cả key và value, mặc định là chính (Primary) để sử dụng trong toàn bộ ứng dụng
   // Khi sử dụng chỉ cần khai báo private final RedisTemplate<Byte[], Byte[]> redisTemplate; trong class cần sử dụng là có thể sử dụng được
 
-  @Bean("RedisTemplateByteByte")
+  @Bean({"RedisTemplateByteByte"})
   public RedisTemplate<Byte[], Byte[]> redisTemplateByteByte(RedisConnectionFactory cnf) {
     RedisTemplate<Byte[], Byte[]> redisTemplate = new RedisTemplate<>();
     redisTemplate.setConnectionFactory(cnf);
@@ -96,7 +96,7 @@ public class RedisCacheConfig {
   } // Tạo một RedisTemplate với kiểu dữ liệu là Byte[] cho cả key và value, không phải là chính (Primary) để sử dụng trong toàn bộ ứng dụng
   // Khi sử dụng, thêm @Qualifier("RedisTemplateByteByte") private final RedisTemplate<Byte[], Byte[]> redisTemplate; vào class cần sử dụng là có thể sử dụng được
 
-  @Bean("RedisTemplateStringObject")
+  @Bean({"RedisTemplateStringObject"})
   public RedisTemplate<String, Object> redisTemplateStringObject(RedisConnectionFactory cnf) {
     RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
     redisTemplate.setConnectionFactory(cnf);
@@ -104,7 +104,7 @@ public class RedisCacheConfig {
   } // Tạo một RedisTemplate với kiểu dữ liệu là String cho key và Object cho value, không phải là chính (Primary) để sử dụng trong toàn bộ ứng dụng
   // Khi sử dụng, thêm @Qualifier("RedisTemplateStringObject") private final RedisTemplate<String, Object> redisTemplate; vào class cần sử dụng là có thể sử dụng được
 
-  @Bean("RedisTemplateObjectObject")
+  @Bean({"RedisTemplateObjectObject"})
   public RedisTemplate<Object, Object> redisTemplateObjectObject(RedisConnectionFactory cnf) {
     RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();
     redisTemplate.setConnectionFactory(cnf);
