@@ -45,9 +45,6 @@ public class AppConfigProperties {
 
   private String defaultLanguage = "vi"; // Ngôn ngữ mặc định
 
-  @Value("${app.log-graphql-enabled:#{false}}") // Đọc giá trị từ file cấu hình với key là "app.log-graphql-enabled"
-  private boolean logGraphqlEnabled;
-
   @Value("${app.time-trace-enabled:#{false}}") // Đọc giá trị từ file cấu hình với key là "app.time-trace-enabled"
   private boolean timeTraceEnabled;
 

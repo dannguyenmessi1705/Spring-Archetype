@@ -21,7 +21,7 @@ import org.springframework.http.client.ClientHttpResponse;
 @Configuration
 @Slf4j
 public class RestTemplateTracer {
-  @Value("${app.log-request-http-v2.ignored-headers:#{null}")
+  @Value("${app.log-request-http.ignored-headers:#{null}")
   private String ignoredHeadersConfig; // Các header cần ẩn trong log
 
   public void trace(HttpRequest request, byte[] body, ClientHttpResponse response, Date startDate) { // Log request và response

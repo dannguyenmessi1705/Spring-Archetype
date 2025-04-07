@@ -1,5 +1,6 @@
 package com.didan.archetype.utils;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,7 +12,8 @@ import com.google.gson.GsonBuilder;
 
 @UtilityClass
 public class UtilsCommon {
-  public static final Gson GSON =(new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create(); // Tao một đối tượng Gson với định dạng ngày tháng cụ thể
+
+  public static final Gson GSON = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create(); // Tao một đối tượng Gson với định dạng ngày tháng cụ thể
   public static final List<String> ignorePatterns = new ArrayList<>(); // Danh sách các mẫu bỏ qua
 
   static {
@@ -45,11 +47,22 @@ public class UtilsCommon {
   public static String hideSensitiveData(String data) {
     data = data.replaceAll("\\\\n", "").replaceAll("\\\\r", "").replaceAll("\\\\", "").replaceAll("\\s*\"(\\w+)\"\\s*:\\s*\"(.*?)\"\\s*", "\"$1\":\"$2\"");
 
-    for(String ignorePattern : ignorePatterns) {
+    for (String ignorePattern : ignorePatterns) {
       data = data.replaceAll(ignorePattern, "*");
     }
 
     return data;
   } // Phương thức này sẽ thay thế các mẫu nhạy cảm trong dữ liệu bằng dấu "*"
+
+  public static boolean isIgnoredUri(String uri) {
+    return uri.contains("swagger")
+        || uri.contains("actuator")
+        || uri.contains("api-docs");
+  }
+
+
+  public static boolean isMultipart(HttpServletRequest request) {
+    return request.getContentType() != null && request.getContentType().startsWith("multipart/");
+  }
 
 }
