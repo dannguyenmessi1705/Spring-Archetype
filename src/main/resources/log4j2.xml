@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+
+  <Properties>
+    <Property name="PATTERN">
+      %d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} | %highlight{%-5level} | %cyan{%t} | %green{(%13F:%L)} | %notEmpty{RequestID=%yellow{%X{requestID}}} | %blue{%X{correlationID}} | %magenta{%X{clientIP}} | %msg%n
+    </Property>
+    <property name="LOG_LEVEL">INFO</property>
+    <Property name="SECRET_REGEX">(?&lt;=\"(?:password|pin|token|loginToken|accessToken|sessionToken|refreshToken)\"\s{0,1}:\s{0,1}\")[^\"]+(?=\")</Property>
+  </Properties>
+
+  <Appenders>
+
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="${PATTERN}"/>
+    </Console>
+
+    <Console name="RegexConsole" target="SYSTEM_OUT">
+      <PatternLayout pattern="${PATTERN}">
+        <Replace regex="${SECRET_REGEX}" replacement="******"/>
+      </PatternLayout>
+    </Console>
+
+  </Appenders>
+
+  <Loggers>
+    <logger name="org.springframework.boot.context" level="OFF" additivity="false"/>
+    <logger name="org.apache.catalina.core.StandardService" level="OFF" additivity="false"/>
+    <logger name="org.apache.catalina.core.ContainerBase" level="OFF" additivity="false"/>
+    <logger name="org.apache.coyote" level="OFF" additivity="false"/>
+    <logger name="org.springframework.boot.actuate.endpoint" level="OFF" additivity="false"/>
+    <logger name="org.hibernate.validator" level="OFF" additivity="false"/>
+    <logger name="org.springframework.boot.web.servlet.FilterRegistrationBean" level="OFF"
+      additivity="false"/>
+    <logger name="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" level="OFF"
+      additivity="false"/>
+    <logger name="org.springframework.context.support.DefaultLifecycleProcessor" level="OFF"
+      additivity="false"/>
+
+    <logger name="com.didan.archetype.service.impl" level="${LOG_LEVEL}" additivity="false">
+      <AppenderRef ref="RegexConsole"/>
+    </logger>
+
+    <Root level="${LOG_LEVEL}">
+      <AppenderRef ref="Console"/>
+    </Root>
+
+  </Loggers>
+</Configuration>
