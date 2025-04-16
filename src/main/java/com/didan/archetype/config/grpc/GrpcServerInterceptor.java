@@ -17,19 +17,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 @Slf4j
+/*
+Không thêm @GrpcGlobalServerInterceptor và @Configuration vì chỉ cần sử dụng trong class kế thừa
+VD:
 @GrpcGlobalServerInterceptor
 @Configuration
+public class InterceptorServer extends GrpcServerInterceptor {
+    public InterceptorServer() {
+        super(new GRpcServerPropertiesCustom());
+    }
+}
+=> Vậy có thể sử dụng InterceptorClient trong các class khác mà không cần phải thêm @GrpcGlobalClientInterceptor và @Configuration
+ */
 public class GrpcServerInterceptor implements ServerInterceptor {
 
   private static final Metadata.Key<String> REQUEST_ID_KEY;
-  @Autowired
+
   GRpcServerPropertiesCustom gRpcServerPropertiesCustom;
 
   static {
     REQUEST_ID_KEY = Key.of("X-Request-Id", Metadata.ASCII_STRING_MARSHALLER); // Khai báo key cho request id
   }
 
-  public GrpcServerInterceptor() {
+  public GrpcServerInterceptor(GRpcServerPropertiesCustom gRpcServerPropertiesCustom) {
+    this.gRpcServerPropertiesCustom = gRpcServerPropertiesCustom;
   }
 
   @Override

@@ -22,10 +22,10 @@ import org.springframework.context.annotation.Configuration;
  // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
 @Data
 public class AppConfigProperties {
-  @Value("${app.application.short-name}") // Đọc giá trị từ file cấu hình với key là "app.application.short-name")
+  @Value("${app.application-short-name}") // Đọc giá trị từ file cấu hình với key là "app.application.short-name")
   private String applicationShortName;
 
-  @Value("${app.application.context-name}")
+  @Value("${app.application-context-name}")
   private String applicationContextName;
 
   @Value("${app.log-request-http:#{false}}")
