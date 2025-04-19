@@ -23,7 +23,7 @@ public class RepositoryAspect {
     long executionTime = System.currentTimeMillis() - start; // Tính thời gian thực hiện
     String message = joinPoint.getSignature() + " exec in " + executionTime + "ms"; // Tạo thông điệp log
     if (executionTime > appConfigProperties.getRepositoryQueryLimitWarningMs()) {
-      log.warn(appConfigProperties.getApplicationShortName() + " : " + message + " : SLOW QUERY"); // Ghi log cảnh báo nếu thời gian thực hiện lớn hơn ngưỡng
+      log.warn("{} : {} : SLOW QUERY", appConfigProperties.getApplicationShortName(), message); // Ghi log cảnh báo nếu thời gian thực hiện lớn hơn ngưỡng
     }
     return proceed; // Trả về kết quả của phương thức
   }
