@@ -8,9 +8,7 @@ import org.springframework.beans.BeanWrapperImpl;
 public class CombinedNotNullValidator implements ConstraintValidator<CombinedNotNull, Object> {
   String[] fields;
 
-  public CombinedNotNullValidator() {
-  }
-
+  @Override
   public void initialize(final CombinedNotNull combinedNotNull) {
     this.fields = combinedNotNull.value();
   } // Hàm này dùng để khởi tạo các trường cần kiểm tra không null từ annotation CombinedNotNull

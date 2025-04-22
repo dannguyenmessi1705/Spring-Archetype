@@ -1,6 +1,5 @@
 package com.didan.archetype.controller.restful;
 
-import com.didan.archetype.config.properties.AppConfigProperties;
 import com.didan.archetype.constant.ResponseStatusCodeEnum;
 import com.didan.archetype.factory.response.GeneralResponse;
 import com.didan.archetype.locale.Translator;
@@ -8,7 +7,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import java.util.Date;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

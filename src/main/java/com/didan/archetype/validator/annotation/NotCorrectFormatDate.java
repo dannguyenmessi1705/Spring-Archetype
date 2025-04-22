@@ -27,7 +27,7 @@ public @interface NotCorrectFormatDate {
   Class<? extends Payload>[] payload() default {}; // Thông tin bổ sung có thể được sử dụng để truyền tải thông tin bổ sung về ràng buộc này
 }
 
-/*
+/**
 Để sử dụng annotation này, bạn có thể áp dụng nó cho các trường trong lớp DTO hoặc Entity của bạn như sau:
 @Valid
 @NotCorrectFormatDate(message = "Ngày không đúng định dạng", value = "yyyy-MM-dd")

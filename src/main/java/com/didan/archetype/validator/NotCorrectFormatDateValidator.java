@@ -10,9 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 public class NotCorrectFormatDateValidator implements ConstraintValidator<NotCorrectFormatDate, String> {
   NotCorrectFormatDate notCorrectFormatDate;
 
-  public NotCorrectFormatDateValidator() {
-  }
-
+  @Override
   public void initialize(NotCorrectFormatDate constraintAnnotation) {
     this.notCorrectFormatDate = constraintAnnotation;
   }

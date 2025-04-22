@@ -44,7 +44,7 @@ public class KafkaProducerEventConfig {
     props.put("delivery.timeout.ms", this.kafkaConfigProducer.getDeliveryTimeout()); // Thời gian timeout cho việc gửi tin nhắn
     props.put("request.timeout.ms", this.kafkaConfigProducer.getRequestTimeout()); // Thời gian timeout cho yêu cầu gửi tin nhắn
     addAuth(props);
-    return new DefaultKafkaProducerFactory<>(props, new StringSerializer(), new JsonSerializer()); // Tạo một DefaultKafkaProducerFactory với các thuộc tính đã cấu hình
+    return new DefaultKafkaProducerFactory<>(props, new StringSerializer(), new JsonSerializer<>()); // Tạo một DefaultKafkaProducerFactory với các thuộc tính đã cấu hình
   }
 
   private void addAuth(Map<String, Object> props) {

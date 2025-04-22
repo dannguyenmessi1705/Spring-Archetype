@@ -25,7 +25,7 @@ public class TimeTraceAOP {
   public void pointcutAnnotationTimeTrace(TimeTraceAspect timeTraceAspect) {
   } // Phương thức này không làm gì cả, chỉ để đánh dấu điểm cắt
 
-  @Around(value = "pointcutAnnotationTimeTrace(timeTraceAspect)", argNames = "joinPoint,timeTraceAspect") // Xác định hành động sẽ thực hiện quanh điểm cắt
+  @Around("pointcutAnnotationTimeTrace(timeTraceAspect)") // Xác định hành động sẽ thực hiện quanh điểm cắt
   public Object aroundProcessAnnotation(ProceedingJoinPoint joinPoint, TimeTraceAspect timeTraceAspect) throws Throwable {
     long start = System.nanoTime(); // Lưu thời gian bắt đầu
     AsciiTable at = new AsciiTable(); // Tạo bảng ASCII lưu trữ thông tin

@@ -18,7 +18,7 @@ public class RefreshScopeListener {
   }
 }
 
-/*
+/**
 Class RefreshScopeListener lắng nghe sự kiện RefreshScopeRefreshedEvent và gọi phương thức materializeAfterRefresh() của từng RefreshScheduler trong danh sách refreshSchedulers.
 Điều này cho phép các RefreshScheduler thực hiện các hành động cần thiết sau khi có sự kiện làm mới xảy ra.
 Ví dụ, nếu bạn có một RefreshScheduler để làm mới một số tác vụ định kỳ hoặc cập nhật cấu hình, bạn có thể thêm nó vào danh sách refreshSchedulers và nó sẽ tự động được gọi khi có sự kiện làm mới xảy ra.

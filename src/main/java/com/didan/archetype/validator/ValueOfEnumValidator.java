@@ -10,14 +10,12 @@ import java.util.stream.Stream;
 public class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, CharSequence> {
   private List<String> acceptedValues;
 
-  public ValueOfEnumValidator() {
-  }
-
+  @Override
   public void initialize(ValueOfEnum annotation) {
     this.acceptedValues = Stream.of(annotation.enumClass().getEnumConstants()).map(Enum::name).collect(Collectors.toList());
   }
 
   public boolean isValid(CharSequence value, ConstraintValidatorContext context) {
-    return value == null ? true : this.acceptedValues.contains(value.toString());
+    return value == null || this.acceptedValues.contains(value.toString());
   }
 }

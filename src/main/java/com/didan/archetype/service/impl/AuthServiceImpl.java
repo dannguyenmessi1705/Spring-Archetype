@@ -1,20 +1,18 @@
 package com.didan.archetype.service.impl;
 
 import com.didan.archetype.config.properties.AuthConfigProperties;
+import com.didan.archetype.config.properties.AuthConfigProperties.Type;
 import com.didan.archetype.service.AuthService;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
-import java.security.SignatureException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
@@ -63,14 +61,12 @@ public class AuthServiceImpl implements AuthService {
   }
 
   private boolean verify(String token) throws NoSuchAlgorithmException, InvalidKeySpecException {
-    switch (authConfigProperties.getType()) {
-      case KEY:
-        token = resolveToken(token); // Tách token từ chuỗi Bearer
-        this.getJwtParser(this.authConfigProperties.getKey().getPublicKey()).parseSignedClaims(token); // Phân tích token đã ký bằng publicKey
-        return true; // Nếu phân tích thành công, trả về true
-      default:
-        return false; // Nếu không phải là loại KEY, trả về false
+    if (Objects.requireNonNull(authConfigProperties.getType()) == Type.KEY) {
+      token = resolveToken(token); // Tách token từ chuỗi Bearer
+      this.getJwtParser(this.authConfigProperties.getKey().getPublicKey()).parseSignedClaims(token); // Phân tích token đã ký bằng publicKey
+      return true; // Nếu phân tích thành công, trả về true
     }
+    return false; // Nếu không phải là loại KEY, trả về false
   }
 
   public String resolveToken(String bearerToken) {
@@ -80,7 +76,7 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public boolean verifyTokenWReason(String token)
-      throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException, InvalidKeySpecException, NoSuchAlgorithmException { // Phương thức này dùng để xác thực token và trả về true nếu xác thực thành công, ngược lại sẽ ném ra ngoại lệ
+      throws InvalidKeySpecException, NoSuchAlgorithmException { // Phương thức này dùng để xác thực token và trả về true nếu xác thực thành công, ngược lại sẽ ném ra ngoại lệ
     return this.verify(token); // Gọi hàm verify để xác thực token
   }
 
@@ -95,7 +91,7 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public Claims getClaimsThrows(String token) // Phương thức này dùng để lấy Claims từ token và ném ra ngoại lệ nếu có lỗi xảy ra
-      throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException, InvalidKeySpecException, NoSuchAlgorithmException {
+      throws InvalidKeySpecException, NoSuchAlgorithmException {
     return this.getJwtParser(this.authConfigProperties.getKey().getPublicKey()).parseSignedClaims(this.resolveToken(token)).getPayload();
   }
 

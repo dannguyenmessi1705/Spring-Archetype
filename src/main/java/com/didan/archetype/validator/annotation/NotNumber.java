@@ -30,7 +30,7 @@ public @interface NotNumber {
   }
 }
 
-/*
+/**
 Ví dụ sử dụng:
 @NotNumber(message = "Giá trị không phải là số")
 private String value; // Trường này sẽ được xác thực không phải là số

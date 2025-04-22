@@ -23,10 +23,11 @@ public class CustomLocaleResolver extends AcceptHeaderLocaleResolver implements 
 
   public CustomLocaleResolver(AppConfigProperties appConfigProperties) {
     this.appConfigProperties = appConfigProperties;
-    this.appConfigProperties.getLocaleResolverLanguages().forEach(l -> this.locales.add(new Locale(l)));
-    this.defaultLanguage = new Locale(this.appConfigProperties.getDefaultLanguage());
+    this.appConfigProperties.getLocaleResolverLanguages().forEach(l -> this.locales.add(Locale.forLanguageTag(l)));
+    this.defaultLanguage = Locale.forLanguageTag(appConfigProperties.getDefaultLanguage());
   }
 
+  @Override
   public Locale resolveLocale(HttpServletRequest request) { // Phương thức này được gọi để xác định ngôn ngữ dựa trên header "Accept-Language" trong request
     String headerLang = request.getHeader("Accept-Language"); // Lấy giá trị của header "Accept-Language"
     return headerLang != null && !headerLang.isEmpty() ? Locale.lookup(LanguageRange.parse(headerLang), this.locales) : this.defaultLanguage; // Nếu header không null và không rỗng, tìm ngôn ngữ phù hợp trong danh sách locales, nếu không thì sử dụng ngôn ngữ mặc định

@@ -9,9 +9,7 @@ public class SingleValueNotNullValidator implements ConstraintValidator<SingleVa
 
   String[] fields;
 
-  public SingleValueNotNullValidator() {
-  }
-
+  @Override
   public void initialize(final SingleValueNotNull combinedNotNull) {
     this.fields = combinedNotNull.value();
   }

@@ -66,9 +66,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
     Map<String, String> errors = new HashMap<>();
-    ex.getBindingResult().getAllErrors().forEach((error) -> {
-      errors.put(error.getObjectName(), error.getDefaultMessage());
-    }); // Lặp qua tất cả các lỗi trong BindingResult và thêm chúng vào Map errors
+    ex.getBindingResult().getAllErrors().forEach(error -> errors.put(error.getObjectName(), error.getDefaultMessage())); // Lặp qua tất cả các lỗi trong BindingResult và thêm chúng vào Map errors
     return createResponse(ResponseStatusCodeEnum.VALIDATION_ERROR, errors); // Trả về phản hồi thất bại với mã trạng thái VALIDATION_ERROR và các lỗi đã thu thập
   }
 
@@ -77,7 +75,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // HttpMessageNotReadableException xảy ra khi không thể đọc được thông điệp HTTP
     if (Objects.nonNull(ex.getMessage())) { // Nếu thông điệp không null
       Optional<ResponseStatusCode> responseStatusCode = this.handleHttpMessageNotReadableListError.entrySet().stream() // Lặp qua danh sách các mã lỗi
-          .filter((stringResponseStatusCodeEntry) ->
+          .filter(stringResponseStatusCodeEntry ->
               ex.getMessage().contains(stringResponseStatusCodeEntry.getKey()))
           .map(Map.Entry::getValue).findFirst(); // Tìm mã lỗi đầu tiên trong danh sách mà thông điệp chứa nó
       if (responseStatusCode.isPresent()) { // Nếu tìm thấy mã lỗi

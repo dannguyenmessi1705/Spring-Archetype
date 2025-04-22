@@ -10,19 +10,19 @@ import lombok.EqualsAndHashCode;
 @Data
 public class BaseResponseException extends RuntimeException {
   private final ResponseStatusCode responseStatusCode;
-  private GeneralResponse generalResponse;
+  private GeneralResponse<Object> generalResponse;
   private Map<String, String> params;
 
   public BaseResponseException(ResponseStatusCode responseStatusCode) {
     this.responseStatusCode = responseStatusCode;
   }
 
-  public BaseResponseException(GeneralResponse generalResponse, ResponseStatusCode responseStatusCode) {
+  public BaseResponseException(GeneralResponse<Object> generalResponse, ResponseStatusCode responseStatusCode) {
     this.generalResponse = generalResponse;
     this.responseStatusCode = responseStatusCode;
   }
 
-  public BaseResponseException(GeneralResponse generalResponse, ResponseStatusCode responseStatusCode, Map<String, String> params) {
+  public BaseResponseException(GeneralResponse<Object> generalResponse, ResponseStatusCode responseStatusCode, Map<String, String> params) {
     this.generalResponse = generalResponse;
     this.responseStatusCode = responseStatusCode;
     this.params = params;

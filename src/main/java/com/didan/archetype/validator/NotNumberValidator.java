@@ -8,9 +8,7 @@ import org.springframework.util.StringUtils;
 public class NotNumberValidator implements ConstraintValidator<NotNumber, String> {
   NotNumber notCorrectFormatDate;
 
-  public NotNumberValidator() {
-  }
-
+  @Override
   public void initialize(NotNumber constraintAnnotation) {
     this.notCorrectFormatDate = constraintAnnotation;
   }

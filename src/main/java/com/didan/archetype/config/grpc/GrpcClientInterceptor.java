@@ -12,10 +12,10 @@ import io.grpc.Status;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 
-/*
-Không thêm @GrpcGlobalClientInterceptor và @Configuration vì chỉ cần sử dụng trong class kế thừa
+/**
+Không thêm @GRpcGlobalInterceptor và @Configuration vì chỉ cần sử dụng trong class kế thừa
 VD:
-@GrpcGlobalClientInterceptor
+@GRpcGlobalInterceptor
 @Configuration
 public class InterceptorClient extends GrpcClientInterceptor {
     public InterceptorClient() {
@@ -40,10 +40,11 @@ public class GrpcClientInterceptor implements ClientInterceptor {
 
 
   @Override
-  public <ReqT, RespT> ClientCall<ReqT, RespT> interceptCall(MethodDescriptor<ReqT, RespT> methodDescriptor, CallOptions callOptions, Channel channel) {
+  public <Q, S> ClientCall<Q, S> interceptCall(MethodDescriptor<Q, S> methodDescriptor, CallOptions callOptions, Channel channel) {
     return new ForwardingClientCall.SimpleForwardingClientCall<>(channel.newCall(methodDescriptor, callOptions.withDeadlineAfter(this.gRpcServerPropertiesCustom.getClientRequestTimeoutMs(),
         TimeUnit.MILLISECONDS))) { // Tạo một client call mới với thời gian timeout được cấu hình trong gRpcServerPropertiesCustom
-      public void sendMessage(ReqT message) {
+      @Override
+      public void sendMessage(Q message) {
         if (GrpcClientInterceptor.this.gRpcServerPropertiesCustom.isClientRequestLog()) { // Kiểm tra xem có cần log không
           GrpcClientInterceptor.log.info("Server request [:{}:{}] with method [{}] and body:\n{}",
               GrpcClientInterceptor.this.host, GrpcClientInterceptor.this.port, methodDescriptor.getFullMethodName(), message);
@@ -52,8 +53,9 @@ public class GrpcClientInterceptor implements ClientInterceptor {
         super.sendMessage(message);
       }
 
-      public void start(ClientCall.Listener<RespT> responseListener, Metadata headers) { // Ghi đè phương thức start để thêm thông tin vào headers
-        GrpcClientListener<RespT> grpcClientListener = new GrpcClientListener<>(GrpcClientInterceptor.this.host, GrpcClientInterceptor.this.port, methodDescriptor.getFullMethodName(),
+      @Override
+      public void start(ClientCall.Listener<S> responseListener, Metadata headers) { // Ghi đè phương thức start để thêm thông tin vào headers
+        GrpcClientListener<S> grpcClientListener = new GrpcClientListener<>(GrpcClientInterceptor.this.host, GrpcClientInterceptor.this.port, methodDescriptor.getFullMethodName(),
             System.currentTimeMillis(), GrpcClientInterceptor.this.gRpcServerPropertiesCustom, responseListener); // Tạo một listener mới
         super.start(grpcClientListener, headers);
       }
@@ -61,17 +63,17 @@ public class GrpcClientInterceptor implements ClientInterceptor {
   }
 
   @Slf4j
-  public static class GrpcClientListener<RespT> extends ClientCall.Listener<RespT> {
+  public static class GrpcClientListener<S> extends ClientCall.Listener<S> {
 
     String methodName;
-    ClientCall.Listener<RespT> responseListener;
+    ClientCall.Listener<S> responseListener;
     private final String host;
     private final int port;
     private final Long timeStartRequestMs;
     private final GRpcServerPropertiesCustom gRpcServerPropertiesCustom;
 
     protected GrpcClientListener(String host, int port, String methodName, Long timeStartRequestMs, GRpcServerPropertiesCustom gRpcServerPropertiesCustom,
-        ClientCall.Listener<RespT> responseListener) {
+        ClientCall.Listener<S> responseListener) {
       this.host = host;
       this.port = port;
       this.methodName = methodName;
@@ -80,7 +82,8 @@ public class GrpcClientInterceptor implements ClientInterceptor {
       this.gRpcServerPropertiesCustom = gRpcServerPropertiesCustom;
     }
 
-    public void onMessage(RespT message) { // Ghi đè phương thức onMessage để log thông tin khi nhận được phản hồi từ server
+    @Override
+    public void onMessage(S message) { // Ghi đè phương thức onMessage để log thông tin khi nhận được phản hồi từ server
       if (this.gRpcServerPropertiesCustom.isClientRequestLog()) {
         log.info("Server Response [:{}:{}] with method [{}] with response ms: {} Response:\n{}",
             this.host, this.port, this.methodName, System.currentTimeMillis() - this.timeStartRequestMs, message);
@@ -89,14 +92,17 @@ public class GrpcClientInterceptor implements ClientInterceptor {
       this.responseListener.onMessage(message);
     }
 
+    @Override
     public void onHeaders(Metadata headers) { // Ghi đè phương thức onHeaders để log thông tin khi nhận được headers từ server
       this.responseListener.onHeaders(headers);
     }
 
+    @Override
     public void onClose(Status status, Metadata trailers) { // Ghi đè phương thức onClose để log thông tin khi kết thúc cuộc gọi
       this.responseListener.onClose(status, trailers);
     }
 
+    @Override
     public void onReady() { // Ghi đè phương thức onReady để log thông tin khi cuộc gọi đã sẵn sàng
       this.responseListener.onReady();
     }

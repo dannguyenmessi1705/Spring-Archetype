@@ -26,7 +26,7 @@ public @interface ValueOfEnum {
   Class<? extends Payload>[] payload() default {}; // Thông tin bổ sung có thể được sử dụng bởi các công cụ xử lý ràng buộc
 }
 
-/*
+/**
 Ví dụ:
 public enum MyEnum {
     VALUE1,

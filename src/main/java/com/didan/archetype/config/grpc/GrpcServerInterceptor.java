@@ -12,12 +12,14 @@ import io.grpc.ServerInterceptor;
 import io.grpc.Status;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.ThreadContext;
+import org.lognet.springboot.grpc.GRpcGlobalInterceptor;
+import org.springframework.context.annotation.Configuration;
 
 @Slf4j
-/*
-Không thêm @GrpcGlobalServerInterceptor và @Configuration vì chỉ cần sử dụng trong class kế thừa
+/**
+Không thêm @GRpcGlobalInterceptor và @Configuration vì chỉ cần sử dụng trong class kế thừa
 VD:
-@GrpcGlobalServerInterceptor
+@GRpcGlobalInterceptor
 @Configuration
 public class InterceptorServer extends GrpcServerInterceptor {
     public InterceptorServer() {
@@ -26,6 +28,8 @@ public class InterceptorServer extends GrpcServerInterceptor {
 }
 => Vậy có thể sử dụng InterceptorClient trong các class khác mà không cần phải thêm @GrpcGlobalClientInterceptor và @Configuration
  */
+@Configuration
+@GRpcGlobalInterceptor
 public class GrpcServerInterceptor implements ServerInterceptor {
 
   private static final Metadata.Key<String> REQUEST_ID_KEY;

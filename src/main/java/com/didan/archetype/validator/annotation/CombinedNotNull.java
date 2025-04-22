@@ -23,7 +23,7 @@ public @interface CombinedNotNull {
   String[] value() default {}; // Các trường cần kiểm tra, có thể là tên của các trường trong class được áp dụng annotation này
 }
 
-/*
+/**
 Để sử dụng trong DTO, bạn cần tạo một class DTO và áp dụng annotation này lên class đó. Ví dụ:
 package com.didan.archetype.dto;
 import com.didan.archetype.validator.annotation.CombinedNotNull;

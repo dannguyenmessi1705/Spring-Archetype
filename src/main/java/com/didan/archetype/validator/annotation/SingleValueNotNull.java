@@ -23,7 +23,7 @@ public @interface SingleValueNotNull {
   String[] value() default {};
 }
 
-/*
+/**
 Ví dụ sử dụng:
 @SingleValueNotNull(value = {"file1", "file2"}, message = "file1 or file2 is required")
 public class MyClass {

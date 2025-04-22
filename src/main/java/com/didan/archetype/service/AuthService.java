@@ -11,12 +11,12 @@ import java.security.spec.InvalidKeySpecException;
 public interface AuthService {
   boolean verifyToken(String token);
 
-  boolean verifyTokenWReason(String token) throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException, InvalidKeySpecException,
+  boolean verifyTokenWReason(String token) throws SignatureException, InvalidKeySpecException,
       NoSuchAlgorithmException;
 
   Claims getClaims(String token);
 
-  Claims getClaimsThrows(String token) throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException, InvalidKeySpecException, NoSuchAlgorithmException;
+  Claims getClaimsThrows(String token) throws SignatureException, InvalidKeySpecException, NoSuchAlgorithmException;
 
   Claims getClaimsNotVerifyToken(String token);
 }

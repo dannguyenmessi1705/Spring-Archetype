@@ -4,7 +4,6 @@ import com.didan.archetype.config.properties.supobj.CaffeineCacheConfig;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 @ConfigurationProperties(
     prefix = "app.cache.memory" // Đánh dấu lớp này để ánh xạ các thuộc tính từ file cấu hình có prefix là "app.cache.memory"
