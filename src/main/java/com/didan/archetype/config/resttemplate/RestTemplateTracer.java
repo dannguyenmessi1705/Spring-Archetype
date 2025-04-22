@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +38,7 @@ public class RestTemplateTracer {
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader) // Đọc dữ liệu từ input stream
     ) {
       HttpHeaders headers = request.getHeaders(); // Lấy thông tin header của request
-      HttpHeaders headersLog = new HttpHeaders(headers);
+      HttpHeaders headersLog = hideSensitiveHeaders(headers, ignoredHeaders);
       for (String ignoredHeader : ignoredHeaders) {  // Ẩn các header cần ẩn
         headersLog.replace(ignoredHeader, Collections.singletonList("***"));
       }
@@ -49,10 +50,7 @@ public class RestTemplateTracer {
           .append(" \n"); // Tạo thông tin log request
 
       headers = response.getHeaders(); // Lấy thông tin header của response
-      headersLog = new HttpHeaders(headers);
-      for (String ignoredHeader : ignoredHeaders) { // Ẩn các header cần ẩn
-        headersLog.replace(ignoredHeader, Collections.singletonList("***")); // Thay thế thông tin header cần ẩn bằng ***
-      }
+      headersLog = hideSensitiveHeaders(headers, ignoredHeaders);
       long end = System.currentTimeMillis(); // Lấy thời gian kết thúc gọi API
       sb.append("Response : ").append(response.getStatusCode()).append(" \n")
           .append("Time     : ").append(UtilsCommon.formatDateLog(new Date())).append(" \n")
@@ -84,6 +82,20 @@ public class RestTemplateTracer {
     if (!headers.containsKey(key)) { // Nếu header chưa tồn tại
       headers.add(key, value); // Thêm header mới
     }
+  }
+
+  private HttpHeaders hideSensitiveHeaders(HttpHeaders headers, List<String> ignoreHeaders) {
+    HttpHeaders hidedHeaders = new HttpHeaders();
+    for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+      String key = entry.getKey();
+      boolean isSensitiveHeader = ignoreHeaders.stream().anyMatch(ignored -> ignored.equalsIgnoreCase(key));
+      if (isSensitiveHeader) {
+        hidedHeaders.put(entry.getKey(), Collections.singletonList("***"));
+      } else {
+        hidedHeaders.put(entry.getKey(), entry.getValue());
+      }
+    }
+    return hidedHeaders;
   }
 
 }

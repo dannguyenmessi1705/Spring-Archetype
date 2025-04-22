@@ -58,7 +58,8 @@ public class RequestHttpFilterExtended extends OncePerRequestFilter {
       Map<String, String> headers = cachedBodyHttpServletRequest.getHeaders();
       Map<String, String> logHeaders = new HashMap<>();
       for (Map.Entry<String, String> entry : headers.entrySet()) {
-        if (ignoredHeaders.contains(entry.getKey())) {
+        boolean isSensitiveHeader = ignoredHeaders.stream().anyMatch(ignored -> ignored.equalsIgnoreCase(entry.getKey()));
+        if (isSensitiveHeader) {
           logHeaders.put(entry.getKey(), "***");
         } else {
           logHeaders.put(entry.getKey(), entry.getValue());
@@ -107,7 +108,8 @@ public class RequestHttpFilterExtended extends OncePerRequestFilter {
     Map<String, String> map = new HashMap<>();
     Collection<String> headersName = response.getHeaderNames();
     for (String s : headersName) {
-      if (ignoredHeaders.contains(s)) {
+      boolean isSensitiveHeader = ignoredHeaders.stream().anyMatch(ignored -> ignored.equalsIgnoreCase(s));
+      if (isSensitiveHeader) {
         map.put(s, "***");
       } else {
         map.put(s, response.getHeader(s));
