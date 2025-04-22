@@ -31,5 +31,6 @@ import org.springframework.context.annotation.Configuration;
 		exclude = {DataSourceAutoConfiguration.class, KafkaAutoConfiguration.class, RedisAutoConfiguration.class, CacheAutoConfiguration.class}
 ) // Tự động cấu hình Spring Boot, loại trừ một số cấu hình tự động không cần thiết để tránh lỗi khi chưa cấu hình các thành phần này
 public class ApplicationArchetype {
+
 	public ApplicationArchetype() {}
 }

@@ -28,11 +28,11 @@ public class AppConfigProperties {
   @Value("${app.application-context-name}")
   private String applicationContextName;
 
-  @Value("${app.log-request-http:#{false}}")
-  private boolean logRequestHttp;
+  @Value("${app.log-request-http:#{true}}")
+  private boolean logRequestHttp = true;
 
-  @Value("${app.default-service-enable-log-request:#{false}}")
-  private boolean defaultServiceEnableLogRequest = false;
+  @Value("${app.default-service-enable-log-request:#{true}}")
+  private boolean defaultServiceEnableLogRequest = true;
 
   @Value("${app.repository-query-limit-warning-ms:30}") // Chỉ định thời gian cảnh báo cho truy vấn repository
   private int repositoryQueryLimitWarningMs;
