@@ -12,7 +12,7 @@ import io.grpc.Status;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 
-/**
+/*
 Không thêm @GRpcGlobalInterceptor và @Configuration vì chỉ cần sử dụng trong class kế thừa
 VD:
 @GRpcGlobalInterceptor
