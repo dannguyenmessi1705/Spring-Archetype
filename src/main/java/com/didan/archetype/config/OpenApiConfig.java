@@ -10,14 +10,18 @@ import io.swagger.v3.oas.models.security.SecurityScheme.Type;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@RequiredArgsConstructor
 public class OpenApiConfig {
 
   final SwaggerConfigProperties swaggerConfigProperties;
+
+  public OpenApiConfig(SwaggerConfigProperties swaggerConfigProperties) {
+    this.swaggerConfigProperties = swaggerConfigProperties;
+  }
 
   @Bean
   public OpenAPI customOpenAPI() {
@@ -35,6 +39,9 @@ public class OpenApiConfig {
   @ConditionalOnProperty(
       value = {"swagger.auth.enabled"},
       havingValue = "true" // Nếu thuộc tính swagger.auth.enabled có giá trị true thì mới kích hoạt cấu hình này
+  )
+  @ConfigurationProperties(
+      prefix = "swagger.auth" // Tiền tố cho các thuộc tính trong file cấu hình
   )
   @Data
   public static class ConfigAuthOpenApi { // Cấu hình bảo mật cho OpenAPI
