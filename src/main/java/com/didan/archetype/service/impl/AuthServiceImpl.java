@@ -3,9 +3,13 @@ package com.didan.archetype.service.impl;
 import com.didan.archetype.config.properties.AuthConfigProperties;
 import com.didan.archetype.config.properties.AuthConfigProperties.Type;
 import com.didan.archetype.service.AuthService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.impl.DefaultClaims;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
@@ -18,11 +22,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Service
-@ConditionalOnProperty(
-    value = "{app.auth.enabled}",
-    havingValue = "true" // Chỉ định rằng dịch vụ này sẽ được kích hoạt khi thuộc tính app.auth.enabled có giá trị true
-)
 @Slf4j
+@ConditionalOnProperty(
+    value = {"app.auth.enabled"}, // Điều kiện để kích hoạt cấu hình này
+    havingValue = "true" // Giá trị cần có để kích hoạt
+)
 public class AuthServiceImpl implements AuthService {
 
   final AuthConfigProperties authConfigProperties;
@@ -38,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
     if (publicKey.equals(this.curKey) && this.jwtParser != null) { // Kiểm tra xem publicKey có giống với khóa hiện tại hay không và jwtParser có khác null hay không
       return this.jwtParser; // Nếu giống, trả về jwtParser hiện tại
     } else { // Nếu không giống hoặc jwtParser là null
-      this.jwtParser = (JwtParser) Jwts.parser().verifyWith(getPublicKey(publicKey)); // Tạo một JwtParser mới bằng cách sử dụng publicKey đã được mã hóa
+      this.jwtParser = Jwts.parser().verifyWith(getPublicKey(publicKey)).build(); // Tạo một JwtParser mới bằng cách sử dụng publicKey đã được mã hóa
       this.curKey = publicKey; // Cập nhật khóa hiện tại
       return this.jwtParser; // Trả về jwtParser mới
     }
@@ -96,12 +100,12 @@ public class AuthServiceImpl implements AuthService {
   }
 
   @Override
-  public Claims getClaimsNotVerifyToken(String token) { // Phương thức này dùng để lấy Claims từ token mà không cần xác thực token
-    return Jwts.parser().build().parseUnsecuredClaims(this.removeSignatureFromToken(this.resolveToken(token))).getPayload();
+  public Claims getClaimsNotVerifyToken(String token) throws JsonProcessingException { // Phương thức này dùng để lấy Claims từ token mà không cần xác thực token
+    return new ObjectMapper().readValue(removeSignatureFromToken(token), DefaultClaims.class);
   }
 
   private String removeSignatureFromToken(String token) { // Phương thức này dùng để loại bỏ chữ ký khỏi token
     String[] splitToken = token.split("\\."); // Tách token thành các phần bằng dấu chấm
-    return splitToken[0] + "." + splitToken[1] + "."; // Trả về token đã được loại bỏ chữ ký
+    return new String(Base64.getUrlDecoder().decode(splitToken[1]), StandardCharsets.UTF_8); // Trả về token đã được loại bỏ chữ ký
   }
 }
