@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Locale.LanguageRange;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -27,6 +28,7 @@ public class CustomLocaleResolver extends AcceptHeaderLocaleResolver implements 
     this.defaultLanguage = Locale.forLanguageTag(appConfigProperties.getDefaultLanguage());
   }
 
+  @NotNull
   @Override
   public Locale resolveLocale(HttpServletRequest request) { // Phương thức này được gọi để xác định ngôn ngữ dựa trên header "Accept-Language" trong request
     String headerLang = request.getHeader("Accept-Language"); // Lấy giá trị của header "Accept-Language"
