@@ -1,6 +1,7 @@
 package com.didan.archetype.config.properties;
 
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -25,14 +26,27 @@ public class AuthConfigProperties {
   @Value("${app.auth.type}")
   private Type type; // Loại auth KEY - được định nghĩa trong enum Type
 
+  @Value("${app.auth.sign.algorithm:#{null}}") // Đọc giá trị từ file cấu hình với key là "app.auth.algorithm"
+  private Algorithm algorithm; // Thuật toán mã hóa được sử dụng trong auth, mặc định là HS256 - được định nghĩa trong enum Algorithm
+
   @Autowired(
     required = false
   )
-  private AuthTypePublicKey key;
+  private AuthTypeKey key;
 
   public enum Type {
     KEY;
     private Type() {}
+  }
+
+  public enum Algorithm {
+    HS256,
+    HS384,
+    HS512,
+    RS256,
+    RS384,
+    RS512;
+    private Algorithm() {}
   }
 
   @Configuration
@@ -42,8 +56,11 @@ public class AuthConfigProperties {
   )
    // Đánh dấu lớp này có thể được làm mới lại khi có thay đổi trong cấu hình
   @Data
-  public static class AuthTypePublicKey {
+  public static class AuthTypeKey {
     @Value("${app.auth.key.public-key}")
-    private String publicKey; // Khóa công khai được sử dụng trong auth
+    private String publicKey; // Khóa công khai được sử dụng trong auth để giải mã
+
+    @Value("${app.auth.key.private-key}")
+    private String privateKey; // Khóa riêng được sử dụng trong auth để mã hóa
   }
 }

@@ -3,6 +3,7 @@ package com.didan.archetype.service.impl;
 import com.didan.archetype.config.properties.AuthConfigProperties;
 import com.didan.archetype.config.properties.AuthConfigProperties.Type;
 import com.didan.archetype.service.AuthService;
+import com.didan.archetype.utils.UtilsCommon;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
@@ -12,10 +13,15 @@ import io.jsonwebtoken.impl.DefaultClaims;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.time.Instant;
 import java.util.Base64;
+import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -52,6 +58,12 @@ public class AuthServiceImpl implements AuthService {
     KeyFactory factory = KeyFactory.getInstance("RSA"); // Tạo một KeyFactory với thuật toán RSA
     X509EncodedKeySpec encodedKeySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKey)); // Mã hóa publicKey thành định dạng X509EncodedKeySpec
     return factory.generatePublic(encodedKeySpec); // Tạo PublicKey từ X509EncodedKeySpec
+  }
+
+  public PrivateKey getPrivateKey(String privateKey) throws NoSuchAlgorithmException, InvalidKeySpecException { // Hàm này dùng để lấy PrivateKey từ chuỗi privateKey
+    KeyFactory factory = KeyFactory.getInstance("RSA"); // Tạo một KeyFactory với thuật toán RSA
+    PKCS8EncodedKeySpec encodedKeySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey)); // Mã hóa privateKey thành định dạng PKCS8EncodedKeySpec
+    return factory.generatePrivate(encodedKeySpec); // Tạo PrivateKey từ PKCS8EncodedKeySpec
   }
 
   @Override
@@ -102,6 +114,23 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public Claims getClaimsNotVerifyToken(String token) throws JsonProcessingException { // Phương thức này dùng để lấy Claims từ token mà không cần xác thực token
     return new ObjectMapper().readValue(removeSignatureFromToken(token), DefaultClaims.class);
+  }
+
+  @Override
+  public String signToken(Map<String, Object> claims, String subject, String issuer, long seconds) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    PrivateKey privateKey = this.getPrivateKey(this.authConfigProperties.getKey().getPrivateKey()); // Lấy PrivateKey từ chuỗi privateKey
+    Instant instantNow = Instant.now(); // Lấy thời gian hiện tại
+    Date now = Date.from(instantNow);
+    Date expiration = Date.from(instantNow.plusSeconds(seconds)); // Tính toán thời gian hết hạn của token
+    return Jwts.builder()
+        .issuer(issuer)
+        .subject(subject) // Thiết lập subject
+        .claims(claims)
+        .issuedAt(now)
+        .expiration(expiration) // Thiết lập thời gian hết hạn
+        .id(UtilsCommon.createNewUUID())
+        .signWith(privateKey) // Ký token bằng PrivateKey
+        .compact(); // Trả về token đã ký
   }
 
   private String removeSignatureFromToken(String token) { // Phương thức này dùng để loại bỏ chữ ký khỏi token
