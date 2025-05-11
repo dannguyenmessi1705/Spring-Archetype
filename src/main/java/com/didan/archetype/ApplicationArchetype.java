@@ -20,6 +20,7 @@ package com.didan.archetype;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
+import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,7 +29,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan({"com.didan.archetype"}) // Quét các thành phần trong package com.didan.archetype
 @EnableAutoConfiguration(
-		exclude = {DataSourceAutoConfiguration.class, KafkaAutoConfiguration.class, RedisAutoConfiguration.class, CacheAutoConfiguration.class}
+		exclude = {DataSourceAutoConfiguration.class, KafkaAutoConfiguration.class, RedisAutoConfiguration.class, CacheAutoConfiguration.class, FlywayAutoConfiguration.class}
 ) // Tự động cấu hình Spring Boot, loại trừ một số cấu hình tự động không cần thiết để tránh lỗi khi chưa cấu hình các thành phần này
 public class ApplicationArchetype {
 }
