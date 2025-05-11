@@ -25,7 +25,7 @@ public class AppConfigProperties {
   @Value("${app.application-context-name}")
   private String applicationContextName;
 
-  @Value("${app.log-request-http:#{true}}")
+  @Value("${app.log-request-http.enabled:#{true}}")
   private boolean logRequestHttp = true;
 
   @Value("${app.default-service-enable-log-request:#{true}}")

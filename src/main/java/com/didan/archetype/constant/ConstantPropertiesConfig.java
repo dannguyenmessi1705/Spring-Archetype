@@ -4,10 +4,10 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public final class ConstantPropertiesConfig {
-public static final String APP_LOG_REQUEST_HTTP = "app.log-request-http";
-  public static final String APP_CACHE_MEMORY_ENABLE = "app.cache.memory.enable";
+public static final String APP_LOG_REQUEST_HTTP = "app.log-request-http.enabled";
+  public static final String APP_CACHE_MEMORY_ENABLE = "app.cache.memory.enabled";
   public static final String APP_CACHE_MEMORY = "app.cache.memory";
-  public static final String APP_CACHE_REDIS_ENABLE = "app.cache.redis.enable";
+  public static final String APP_CACHE_REDIS_ENABLE = "app.cache.redis.enabled";
   public static final String APP_CACHE_REDIS = "app.cache.redis";
   public static final String REST_DEFAULT_SERVICE_ENABLE_LOG_REQUEST = "app.default-service-enable-log-request";
   public static final String APPLICATION_SHORT_NAME = "app.application-short-name";

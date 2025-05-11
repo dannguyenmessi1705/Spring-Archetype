@@ -25,7 +25,7 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 @Configuration
 @Slf4j
 @Order(1)
-@ConditionalOnProperty(value = "app.log-request-http", havingValue = "true") // Kiểm tra xem thuộc tính này có được cấu hình là true không, nếu có thì mới áp dụng filter này
+@ConditionalOnProperty(value = "app.log-request-http.enabled", havingValue = "true") // Kiểm tra xem thuộc tính này có được cấu hình là true không, nếu có thì mới áp dụng filter này
 public class RequestHttpFilterExtended extends OncePerRequestFilter {
 
   Map<String, String> replaceCharsError = new HashMap<>();
