@@ -5,18 +5,19 @@ import lombok.EqualsAndHashCode;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(
     prefix = "spring.kafka" // Đánh dấu lớp này để ánh xạ các thuộc tính từ file cấu hình có prefix là "spring.kafka"
 )
-@Configuration
+@Component
 @Primary // Đánh dấu lớp này là lớp chính trong Spring, sẽ được sử dụng thay cho lớp khác có cùng kiểu
 
 @ConditionalOnProperty(
     value = {"spring.kafka.enabled"}, // Điều kiện để kích hoạt cấu hình này
-    havingValue = "true" // Giá trị cần có để kích hoạt
+    havingValue = "true", // Giá trị cần có để kích hoạt
+    matchIfMissing = false
 )
 @Data
 @EqualsAndHashCode(callSuper = true)
