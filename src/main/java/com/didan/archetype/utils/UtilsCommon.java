@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -101,4 +102,45 @@ public class UtilsCommon {
     }
   }
 
+  public static void trimObjectStringValues(Object object) {
+    if (object == null) {
+      return;
+    }
+    trimFields(object);
+  }
+
+  private static void trimFields(Object object) {
+    for (Field field : object.getClass().getDeclaredFields()) {
+      field.setAccessible(true); // Cho phép truy cập vào trường riêng tư
+      try {
+        Object value = field.get(object);
+        if (value instanceof String) {
+          String trimmedValue = ((String) value).trim(); // Cắt bỏ khoảng trắng ở đầu và cuối chuỗi
+          field.set(object, trimmedValue); // Gán giá trị đã cắt vào trường
+        } else if (value != null && value.getClass().isArray()) {
+          Object[] array = (Object[]) value;
+          for (int i = 0; i < array.length; i++) {
+            if (array[i] instanceof String) {
+              array[i] = ((String) array[i]).trim(); // Cắt bỏ khoảng trắng cho từng phần tử trong mảng
+            } else if (array[i] != null) {
+              trimFields(array[i]); // Đệ quy để xử lý các trường hợp đối tượng lồng nhau
+            }
+          }
+          field.set(object, array); // Gán mảng đã cắt vào trường
+        } else if (value != null) {
+          trimFields(value); // Đệ quy để xử lý các trường hợp đối tượng lồng nhau
+        }
+      } catch (IllegalAccessException ex) {
+        log.error("Error accessing field {}: {}", field.getName(), ex.getMessage(), ex);
+        throw new RuntimeException(ex);
+      }
+    }
+  }
+
+  public static String trimString(String str) {
+    if (str == null) {
+      return null;
+    }
+    return str.trim(); // Cắt bỏ khoảng trắng ở đầu và cuối chuỗi
+  }
 }
