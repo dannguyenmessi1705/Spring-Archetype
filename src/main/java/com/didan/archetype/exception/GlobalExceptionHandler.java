@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -66,10 +67,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    log.error("MethodArgumentNotValidException: ", ex);
     Map<String, String> errors = new HashMap<>();
     ex.getBindingResult().getAllErrors().forEach(error -> {
+      String fieldName = ((FieldError) error).getField();
       String errorMessage = Translator.toLocale(error.getDefaultMessage());
-      errors.put(error.getObjectName(), errorMessage);
+      errors.put(fieldName, errorMessage);
     });
     return createResponse(ResponseStatusCodeEnum.VALIDATION_ERROR, errors); // Trả về phản hồi thất bại với mã trạng thái VALIDATION_ERROR và các lỗi đã thu thập
   }
