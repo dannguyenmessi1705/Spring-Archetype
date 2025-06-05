@@ -69,7 +69,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     Map<String, String> errors = new HashMap<>();
     ex.getBindingResult().getAllErrors().forEach(error -> {
       String errorMessage = Translator.toLocale(error.getDefaultMessage());
-      errors.put(errorMessage, error.getDefaultMessage());
+      errors.put(error.getObjectName(), errorMessage);
     });
     return createResponse(ResponseStatusCodeEnum.VALIDATION_ERROR, errors); // Trả về phản hồi thất bại với mã trạng thái VALIDATION_ERROR và các lỗi đã thu thập
   }
