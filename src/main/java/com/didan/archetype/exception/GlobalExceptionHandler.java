@@ -5,6 +5,7 @@ import com.didan.archetype.constant.ResponseStatusCodeEnum;
 import com.didan.archetype.factory.response.GeneralResponse;
 import com.didan.archetype.factory.response.ResponseFactory;
 import com.didan.archetype.factory.response.ResponseStatus;
+import com.didan.archetype.locale.Translator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +67,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
     Map<String, String> errors = new HashMap<>();
-    ex.getBindingResult().getAllErrors().forEach(error -> errors.put(error.getObjectName(), error.getDefaultMessage())); // Lặp qua tất cả các lỗi trong BindingResult và thêm chúng vào Map errors
+    ex.getBindingResult().getAllErrors().forEach(error -> {
+      String errorMessage = Translator.toLocale(error.getDefaultMessage());
+      errors.put(errorMessage, error.getDefaultMessage());
+    });
     return createResponse(ResponseStatusCodeEnum.VALIDATION_ERROR, errors); // Trả về phản hồi thất bại với mã trạng thái VALIDATION_ERROR và các lỗi đã thu thập
   }
 
@@ -86,7 +90,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(ex, null, headers, status, request); // Nếu không tìm thấy mã lỗi, gọi phương thức handleExceptionInternal để xử lý ngoại lệ
   }
 
-  private ResponseEntity<Object> createResponse(ResponseStatusCode response) {
+  public ResponseEntity<Object> createResponse(ResponseStatusCode response) {
     ResponseStatus responseStatus = new ResponseStatus(response.getCode(), true);
     responseStatus.setResponseTime(new Date());
     GeneralResponse<Object> responseObject = new GeneralResponse<>();
@@ -94,12 +98,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(responseObject, HttpStatus.valueOf(response.getHttpCode()));
   }
 
-  private ResponseEntity<Object> createResponse(ResponseStatusCode response, Object errors) {
+  public ResponseEntity<Object> createResponse(ResponseStatusCode response, Object errors) {
     ResponseStatus responseStatus = new ResponseStatus(response.getCode(), true);
     responseStatus.setResponseTime(new Date());
     GeneralResponse<Object> responseObject = new GeneralResponse<>();
     responseObject.setStatus(responseStatus);
     responseObject.setData(errors);
     return new ResponseEntity<>(responseObject, HttpStatus.valueOf(response.getHttpCode()));
+  }
+
+  public ResponseEntity<GeneralResponse<Object>> returnFailData(GeneralResponse<Object> fieldErrors, String errorCode,
+      String exception, String exception1) {
+    ResponseStatus responseStatus = new ResponseStatus();
+    responseStatus.setCode(errorCode);
+    responseStatus.setDisplayMessage(exception);
+    responseStatus.setMessage(exception1);
+    responseStatus.setResponseTime(new Date());
+
+    fieldErrors.setStatus(responseStatus);
+    return ResponseEntity.ok(fieldErrors);
   }
 }
