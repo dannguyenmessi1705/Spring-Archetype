@@ -42,6 +42,8 @@ public interface MinioService {
 
   ObjectWriteResponse uploadFile(String bucketName, String objectName, InputStream inputStream);
 
+  ObjectWriteResponse uploadFile(String bucketName, String objectName, InputStream inputStream, String contentType);
+
   ObjectWriteResponse uploadImage(String bucketName, String imageBase64, String imageName);
 
   InputStream base64ToInputStream(String base64);

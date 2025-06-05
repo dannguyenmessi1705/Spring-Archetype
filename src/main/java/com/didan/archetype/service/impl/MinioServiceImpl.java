@@ -111,7 +111,7 @@ public class MinioServiceImpl implements MinioService {
 
   @Override
   public void removeBucket(String bucketName) {
-try {
+    try {
       minioClient.removeBucket(
           RemoveBucketArgs.builder()
               .bucket(bucketName)
@@ -273,6 +273,25 @@ try {
           PutObjectArgs.builder()
               .bucket(bucketName)
               .object(objectName)
+              .stream(inputStream, inputStream.available(), -1)
+              .build()
+      );
+    } catch (Exception e) {
+      log.error("Error uploading file: {}", e.getMessage());
+      throw new BusinessException("Error uploading file: " + e.getMessage());
+    }
+  }
+
+  @Override
+  public ObjectWriteResponse uploadFile(String bucketName, String objectName,
+      InputStream inputStream, String contentType) {
+    try {
+      return minioClient.putObject(
+          PutObjectArgs.builder()
+              .bucket(bucketName)
+              .object(objectName)
+              .contentType(StringUtils.hasText(contentType) ? contentType : "application/octet"
+                  + "-stream")
               .stream(inputStream, inputStream.available(), -1)
               .build()
       );
