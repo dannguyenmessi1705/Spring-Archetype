@@ -21,4 +21,8 @@ public class RedisCacheConfigProperties {
   private List<String> nodes = new ArrayList<>(); // Danh sách các node Redis
   private Map<String, Long> cacheExpirations = new HashMap<>(); // Map chứa các thời gian hết hạn cho từng cache
   private String password = ""; // Mật khẩu cho Redis
+  private long commandTimeoutSecond = 10;
+  private int maxPoolSize = 8;
+  private int maxIdle = 8;
+  private int minIdle = 0;
 }

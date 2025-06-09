@@ -1,7 +1,6 @@
 package com.didan.archetype.cache;
 
 import com.didan.archetype.config.properties.RedisCacheConfigProperties;
-import io.lettuce.core.ReadFrom;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +18,8 @@ import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
@@ -27,6 +27,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import redis.clients.jedis.JedisPoolConfig;
 
 @Configuration // Đánh dấu lớp này là một cấu hình Spring
 @EnableConfigurationProperties({RedisCacheConfigProperties.class}) // Kích hoạt ánh xạ các thuộc tính từ lớp RedisCacheConfigProperties
@@ -57,16 +58,29 @@ public class RedisCacheConfig {
   }
 
   @Bean
-  public LettuceConnectionFactory redisConnectionFactory(RedisCacheConfigProperties configs) {
+  public RedisConnectionFactory redisConnectionFactory(RedisCacheConfigProperties configs) {
     log.info("Redis (/Lettuce) configuration enabled. With cache timeout " + configs.getTimeoutSeconds() + " seconds.");
     if (!CollectionUtils.isEmpty(configs.getNodes())) { // Nếu danh sách các node không rỗng
       log.info("Redis cluster: {}", configs.getNodes());
-      LettuceClientConfiguration clientConfiguration = LettuceClientConfiguration.builder().readFrom(ReadFrom.MASTER).build(); // Tạo cấu hình client Lettuce với chế độ đọc từ master
       RedisClusterConfiguration redisClusterConfiguration = new RedisClusterConfiguration(configs.getNodes()); // Tạo cấu hình cluster Redis từ danh sách các node
       if (StringUtils.hasText(configs.getPassword())) { // Nếu có mật khẩu
         redisClusterConfiguration.setPassword(RedisPassword.of(configs.getPassword())); // Thiết lập mật khẩu cho cấu hình cluster
       }
-      return new LettuceConnectionFactory(redisClusterConfiguration, clientConfiguration); // Trả về kết nối Lettuce với cấu hình cluster
+      JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+      jedisPoolConfig.setMaxTotal(configs.getMaxPoolSize());
+      jedisPoolConfig.setMaxIdle(configs.getMaxIdle());
+      jedisPoolConfig.setMinIdle(configs.getMinIdle());
+      log.info("Redis pool: {}", jedisPoolConfig);
+
+      JedisClientConfiguration jedisClientConfiguration = JedisClientConfiguration.builder()
+          .clientName(applicationShortName)
+          .usePooling()
+          .poolConfig(jedisPoolConfig)
+          .and()
+          .build();
+
+      log.info("Redis client configuration: [{}]", jedisClientConfiguration);
+      return new JedisConnectionFactory(redisClusterConfiguration, jedisClientConfiguration); // Trả về kết nối Lettuce với cấu hình cluster
     } else {
       log.info("Redis standalone: {}:{}", configs.getHost(), configs.getPort());
       RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(); // Tạo cấu hình standalone Redis
@@ -124,7 +138,7 @@ public class RedisCacheConfig {
     Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>(); // Tạo một Map để lưu trữ các cấu hình cache
 
     for (Map.Entry<String, Long> cacheNameAndTimeout : configs.getCacheExpirations().entrySet()) { // Duyệt qua các cấu hình cache
-      cacheConfigurations.put(cacheNameAndTimeout.getKey(), this.createCacheConfiguration((Long) cacheNameAndTimeout.getValue())) ; // Thêm cấu hình cache vào Map
+      cacheConfigurations.put(cacheNameAndTimeout.getKey(), this.createCacheConfiguration(cacheNameAndTimeout.getValue())) ; // Thêm cấu hình cache vào Map
     }
 
     return RedisCacheManager.builder(redisConnectionFactory) // Tạo một CacheManager với kết nối Redis
