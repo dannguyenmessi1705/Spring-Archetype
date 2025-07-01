@@ -24,6 +24,7 @@ public class AsyncConfig {
     executor.setMaxPoolSize(appConfigProperties.getAsyncExecutorMaxPoolSize()); // Số lượng luồng tối đa trong pool
     executor.setWaitForTasksToCompleteOnShutdown(true); // Đợi cho các tác vụ đang chạy hoàn thành trước khi tắt executor
     executor.setThreadNamePrefix(appConfigProperties.getAsyncExecutorThreadNamePrefix()); // Tiền tố cho tên luồng
+    executor.setTaskDecorator(new MdcTaskDecorator()); // Sử dụng MdcTaskDecorator để giữ lại thông tin MDC trong các luồng bất đồng bộ
     return executor;
   }
 }

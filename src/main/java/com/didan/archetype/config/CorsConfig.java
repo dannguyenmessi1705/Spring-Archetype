@@ -1,6 +1,7 @@
 package com.didan.archetype.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -38,7 +39,7 @@ public class CorsConfig {
   public WebMvcConfigurer corsConfigurer() {
     return new WebMvcConfigurer() {
       @Override
-      public void addCorsMappings(CorsRegistry registry) {
+      public void addCorsMappings(@NotNull CorsRegistry registry) {
         registry
             .addMapping("/**") // Áp dụng CORS cho tất cả các đường dẫn
             .allowedOriginPatterns(allowOriginPatterns) // Cho phép tất cả các nguồn gốc
